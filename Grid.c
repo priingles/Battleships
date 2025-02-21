@@ -77,13 +77,13 @@ void displayTrackingGrid() {
 
 int gridSetup() {
 
-    const struct ship carrier = newShip("Carrier", 5, 'C');
-    const struct ship battleship = newShip("Battleship", 4, 'B');
-    const struct ship destroyer = newShip("Destroyer", 3, 'D');
-    const struct ship submarine = newShip("Submarine", 3, 'S');
-    const struct ship patrolBoat = newShip("PatrolBoat", 2, 'P');
+    const struct Ship carrier = newShip("Carrier", 5, 'C');
+    const struct Ship battleship = newShip("Battleship", 4, 'B');
+    const struct Ship destroyer = newShip("Destroyer", 3, 'D');
+    const struct Ship submarine = newShip("Submarine", 3, 'S');
+    const struct Ship patrolBoat = newShip("PatrolBoat", 2, 'P');
 
-    struct ship ships[] = {carrier, battleship, destroyer, submarine, patrolBoat};
+    struct Ship ships[] = {carrier, battleship, destroyer, submarine, patrolBoat};
 
 
     printf("You have 5 ship types you can set up on the grid, either horizontally or vertically\nShips cannot overlap or be positioned outside of the grid.\nWhere do you want to position your ships?\n{351} 3 being row, 5 being column and 1 being vertical(0-horizontal)\n");
@@ -101,7 +101,7 @@ int gridSetup() {
             if (endptr == input) {
                 printf("Please enter a valid coordinate.\n{351} 3 being row, 5 being column and 1 being vertical(0-horizontal)\n");
             } else if (*endptr == '\n') {
-                validMove = gridPosition(cood, ships[i].size, ships[i].type);
+                validMove = validPosition(cood, ships[i].size, ships[i].type); //
             }
 
         }
@@ -112,10 +112,12 @@ int gridSetup() {
     return 0;
 }
 
-bool gridPosition(const int coordinates, const int size, const char type) {
+// Positions a ship on the playing grid
+bool validPosition(const int coordinates, const int size, const char type) {
+
     int row = (coordinates / 100);
     int col = ((coordinates % 100) / 10);
-    int axis = coordinates % 10;
+    const int axis = coordinates % 10;
 
     //changes 0s to 10s
     if (row == 0) {
@@ -138,7 +140,6 @@ bool gridPosition(const int coordinates, const int size, const char type) {
                 if (i == size - 1) {
                     return true;
                 }
-                 // breaks retry loop when move is valid
             } else {
                 printf("Grid position is occupied, Try again: ");
                 break;
@@ -161,11 +162,11 @@ bool gridPosition(const int coordinates, const int size, const char type) {
             }
         }
     }
-    return 0;
+    return false;
 }
 
-//updates the grid with markers for hits and misses
-void gridUpdate(const int cood, const char type, char grid[][11]) {
+//updates the grid with markers for hits and misses of either player or bot
+void gridUpdate(const int cood, const char type, struct Player player) {
 
      int row = (cood / 10);
      int col = (cood % 10);
@@ -178,10 +179,10 @@ void gridUpdate(const int cood, const char type, char grid[][11]) {
         col = 10;
     }
 
-    grid[row][col] = type;
+    player.trackingGrid[row][col] = type;
 }
 
-void attack(const int cood) {
+void attack(const int cood, struct Player player) {
     int row = (cood / 10);
     int col = (cood % 10);
 
@@ -194,52 +195,52 @@ void attack(const int cood) {
     }
 
 
-    switch (playingGrid[row][col]) {
+    switch (player.playingGrid[row][col]) {
         case '~':
             gridUpdate(cood, 'O', trackingGrid);
             printf("You missed :(\n");
             break;
         case 'C':
-            gridUpdate(cood, 'X', trackingGrid);
-            gridUpdate(cood, 'X', playingGrid);
+            gridUpdate(cood, 'X', player.trackingGrid);
+            gridUpdate(cood, 'X', player.playingGrid);
             printf("You hit enemy carrier!\n");
-            carrierHp -= 1;
+            player.carrier.size -= 1;
             if (carrierHp == 0) {
                 printf("Enemy carrier has been sunk!\n");
             }
             break;
         case 'B':
-            gridUpdate(cood, 'X', trackingGrid);
-            gridUpdate(cood, 'X', playingGrid);
+            gridUpdate(cood, 'X', player.trackingGrid);
+            gridUpdate(cood, 'X', player.playingGrid);
             printf("You hit enemy Battleship!\n");
-            battleshipHp -= 1;
+            player.battleship.size -= 1;
             if (battleshipHp == 0) {
                 printf("Enemy battleship has been sunk!\n");
             }
             break;
         case 'D':
-            gridUpdate(cood, 'X', trackingGrid);
-            gridUpdate(cood, 'X', playingGrid);
+            gridUpdate(cood, 'X', player.trackingGrid);
+            gridUpdate(cood, 'X', player.playingGrid);
             printf("You hit enemy Destroyer!\n");
-            destroyerHp -= 1;
+            player.destroyer.size -= 1;
             if (destroyerHp == 0) {
                 printf("Enemy destroyer has been sunk!\n");
             }
             break;
         case 'S':
-            gridUpdate(cood, 'X', trackingGrid);
-            gridUpdate(cood, 'X', playingGrid);
+            gridUpdate(cood, 'X', player.trackingGrid);
+            gridUpdate(cood, 'X', player.playingGrid);
             printf("You hit enemy Submarine!\n");
-            submarineHp -= 1;
+            player.submarine.size -= 1;
             if (submarineHp == 0) {
                 printf("Enemy submarine has been sunk!\n");
             }
             break;
         case 'P':
-            gridUpdate(cood, 'X', trackingGrid);
-            gridUpdate(cood, 'X', playingGrid);
+            gridUpdate(cood, 'X', player.trackingGrid);
+            gridUpdate(cood, 'X', player.playingGrid);
             printf("You hit enemy Patrol Boat!\n");
-            patrolBoatHp -= 1;
+            player.patrolBoat.size -= 1;
             if (patrolBoatHp == 0) {
                 printf("Enemy patrol boat has been sunk!\n");
             }

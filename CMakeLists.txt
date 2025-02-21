@@ -6,4 +6,8 @@ set(CMAKE_C_STANDARD 11)
 add_executable(Battleships main.c
         Grid.c
         header.h
-        ship.c)
+        ship.c
+        Bot.c
+        Game.c
+        Player.c
+)
