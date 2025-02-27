@@ -6,16 +6,6 @@
 
 
 
-int main();
-int gridSetup();
-void displayGrid();
-void displayTrackingGrid();
-bool validPosition(int coordinates, int size, char type);
-void attack(int cood);
-void gridUpdate(int cood, char type, char grid[][11]);
-struct Ship newShip(char name[], int size, char type);
-int botPlay();
-
 typedef struct Ship {
 
     char name[30];
@@ -27,41 +17,29 @@ typedef struct Player {
 
     char name[50];
 
-    struct Ship carrier;
-    struct Ship battleship;
-    struct Ship destroyer;
-    struct Ship submarine;
-    struct Ship patrolBoat;
+    Ship carrier;
+    Ship battleship;
+    Ship destroyer;
+    Ship submarine;
+    Ship patrolBoat;
 
+    char playingGrid[11][11];
+    char trackingGrid[11][11];
 
-
-    char playingGrid[11][11] = { // Grid with player ships present and everything
-        {'0','1','2','3','4','5','6','7','8','9','0'},
-        {'1','~','~','~','~','~','~','~','~','~','~'},
-        {'2','~','~','~','~','~','~','~','~','~','~'},
-        {'3','~','~','~','~','~','~','~','~','~','~'},
-        {'4','~','~','~','~','~','~','~','~','~','~'},
-        {'5','~','~','~','~','~','~','~','~','~','~'},
-        {'6','~','~','~','~','~','~','~','~','~','~'},
-        {'7','~','~','~','~','~','~','~','~','~','~'},
-        {'8','~','~','~','~','~','~','~','~','~','~'},
-        {'9','~','~','~','~','~','~','~','~','~','~'},
-        {'0','~','~','~','~','~','~','~','~','~','~'},
-    };
-
-    char trackingGrid[11][11] = { // grid for tracking hits, only commenting incase im high as shit when I read this next
-        {'0','1','2','3','4','5','6','7','8','9','0'},
-        {'1','~','~','~','~','~','~','~','~','~','~'},
-        {'2','~','~','~','~','~','~','~','~','~','~'},
-        {'3','~','~','~','~','~','~','~','~','~','~'},
-        {'4','~','~','~','~','~','~','~','~','~','~'},
-        {'5','~','~','~','~','~','~','~','~','~','~'},
-        {'6','~','~','~','~','~','~','~','~','~','~'},
-        {'7','~','~','~','~','~','~','~','~','~','~'},
-        {'8','~','~','~','~','~','~','~','~','~','~'},
-        {'9','~','~','~','~','~','~','~','~','~','~'},
-        {'0','~','~','~','~','~','~','~','~','~','~'},
-    };
 }Player;
+
+int main();
+int gridSetup(struct Player player);
+void displayGrid(char playingGrid[11][11], char trackingGrid[11][11]);
+bool validPosition(int coordinates, int size, char type);
+void attack(int cood, struct Player player);
+void gridUpdate(int cood, char type, char grid[][11]);
+Ship newShip(char name[], int size, char type);
+int botPlay();
+int gameSetup();
+void clear_terminal();
+void initGrid(struct Player *player);
+
+
 
 #endif // HEADER_H

@@ -1,15 +1,15 @@
 #include "header.h"
 
+/**
+ * BUGS THAT CURRENTLY NEED FIXING
+ * 1. When an axis value is entered other than 1,0
+ * the exact value is printed to console as opposed to an error
+ * and retry loop
+ *
+ */
+
 int main(void) {
 
-    gridSetup();
-    attack(10);
-    attack(20);
-    attack(31);
-    attack(41);
-    attack(51);
-    attack(84);
-    displayGrid();
-    displayTrackingGrid();
+    gameSetup();
     return 0;
 }

@@ -1,21 +1,35 @@
-#include "header.h";
-#include <string.h>;
+#include "header.h"
+#include <string.h>
 
 int createPlayer(char name[50]) {
 
     Player player;
     strcpy(player.name, name);
 
-    struct Ship carrier = newShip("Battleship", 4, 'C');
-    struct Ship battleship = newShip("Battleship", 4, 'B');
-    struct Ship destroyer = newShip("Destroyer", 3, 'D');
-    struct Ship submarine = newShip("Submarine", 3, 'S');
-    struct Ship patrolBoat = newShip("PatrolBoat", 2, 'P');
 
-    player.carrier = carrier;
-    player.battleship = battleship;
-    player.destroyer = destroyer;
-    player.submarine = submarine;
-    player.patrolBoat = patrolBoat;
+    player.carrier = newShip("Carrier", 5, 'C');
+    player.battleship = newShip("Battleship", 4, 'B');
+    player.destroyer = newShip("Destroyer", 3, 'D');
+    player.submarine = newShip("Submarine", 3, 'S');
+    player.patrolBoat = newShip("PatrolBoat", 3, 'P');
 
+}
+
+void initGrid(Player *player) {
+    const char tempGrid[11][11] = { // Temporary array
+        {'0','1','2','3','4','5','6','7','8','9','0'},
+        {'1','~','~','~','~','~','~','~','~','~','~'},
+        {'2','~','~','~','~','~','~','~','~','~','~'},
+        {'3','~','~','~','~','~','~','~','~','~','~'},
+        {'4','~','~','~','~','~','~','~','~','~','~'},
+        {'5','~','~','~','~','~','~','~','~','~','~'},
+        {'6','~','~','~','~','~','~','~','~','~','~'},
+        {'7','~','~','~','~','~','~','~','~','~','~'},
+        {'8','~','~','~','~','~','~','~','~','~','~'},
+        {'9','~','~','~','~','~','~','~','~','~','~'},
+        {'0','~','~','~','~','~','~','~','~','~','~'}
+    };
+
+    memcpy(player->playingGrid, tempGrid, sizeof(tempGrid));
+    memcpy(player->trackingGrid, tempGrid, sizeof(tempGrid));
 }

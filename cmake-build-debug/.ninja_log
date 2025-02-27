@@ -1,6 +1,15 @@
 # ninja log v6
+3	46	7623734621295108	CMakeFiles/Battleships.dir/main.c.obj	5e3e12ccaf122991
+6	84	7623734621335116	CMakeFiles/Battleships.dir/Grid.c.obj	727b0dd72fcd5eff
 3	28	7603042024639901	clean	b4156cfd904aa1e6
-169	323	7605491696314518	CMakeFiles/Battleships.dir/Grid.c.obj	727b0dd72fcd5eff
-152	308	7605491696154609	CMakeFiles/Battleships.dir/main.c.obj	5e3e12ccaf122991
-179	685	7605492112772353	Battleships.exe	d63ae7c9dbe61f1f
-16	175	7605492111133281	CMakeFiles/Battleships.dir/ship.c.obj	2dc0d75757ca02af
+87	151	7623734622130270	Battleships.exe	5e8adb24afad01b
+9	59	7623734621355108	CMakeFiles/Battleships.dir/ship.c.obj	2dc0d75757ca02af
+14	87	7623734621405113	CMakeFiles/Battleships.dir/Game.c.obj	d71497154fece72b
+12	65	7623734621385114	CMakeFiles/Battleships.dir/Bot.c.obj	7f5370ec3d66f868
+17	75	7623734621435114	CMakeFiles/Battleships.dir/Player.c.obj	de2bd6a15ed368ef
+8	66	7623737200216119	CMakeFiles/Battleships.dir/Game.c.obj	d71497154fece72b
+4	86	7623737200175999	CMakeFiles/Battleships.dir/Grid.c.obj	727b0dd72fcd5eff
+2	74	7623737422891927	CMakeFiles/Battleships.dir/Grid.c.obj	727b0dd72fcd5eff
+75	155	7623737423612598	Battleships.exe	5e8adb24afad01b
+3	68	7623739203116717	CMakeFiles/Battleships.dir/Grid.c.obj	727b0dd72fcd5eff
+69	136	7623739203776740	Battleships.exe	5e8adb24afad01b

@@ -1,9 +1,16 @@
 #include <stdio.h>
 #include <stdbool.h>
 #include <stdlib.h>
-
 #include "header.h"
 
+
+void clear_terminal() {
+#ifdef _WIN32
+    system("cls");  // Windows
+#else
+    system("clear");  // Linux/macOS
+#endif
+}
 
 char playingGrid[11][11] = { // Grid with player ships present and everything
     {'0','1','2','3','4','5','6','7','8','9','0'},
@@ -51,22 +58,14 @@ int patrolBoatHp = 2;
 
 
 
-void displayGrid() {
+void displayGrid(char playingGrid[][11], char trackingGrid[][11]) {
 
     printf("\n");
     for (int i = 0; i < 11; i++) {
         for (int j = 0; j < 11; j++) {
             printf("%c ",playingGrid[i][j]);
         }
-        printf("\n");
-    }
-    printf("\n");
-}
-
-void displayTrackingGrid() {
-
-    printf("\n");
-    for (int i = 0; i < 11; i++) {
+        printf("            ");
         for (int j = 0; j < 11; j++) {
             printf("%c ",trackingGrid[i][j]);
         }
@@ -75,21 +74,23 @@ void displayTrackingGrid() {
     printf("\n");
 }
 
-int gridSetup() {
-
-    const struct Ship carrier = newShip("Carrier", 5, 'C');
-    const struct Ship battleship = newShip("Battleship", 4, 'B');
-    const struct Ship destroyer = newShip("Destroyer", 3, 'D');
-    const struct Ship submarine = newShip("Submarine", 3, 'S');
-    const struct Ship patrolBoat = newShip("PatrolBoat", 2, 'P');
-
-    struct Ship ships[] = {carrier, battleship, destroyer, submarine, patrolBoat};
 
 
+int gridSetup(Player player) {
+
+    const Ship carrier = newShip("Carrier", 5, 'C');
+    const Ship battleship = newShip("Battleship", 4, 'B');
+    const Ship destroyer = newShip("Destroyer", 3, 'D');
+    const Ship submarine = newShip("Submarine", 3, 'S');
+    const Ship patrolBoat = newShip("PatrolBoat", 2, 'P');
+
+    Ship ships[] = {carrier, battleship, destroyer, submarine, patrolBoat};
+
+    printf("Hey %s!!\n", player.name);
     printf("You have 5 ship types you can set up on the grid, either horizontally or vertically\nShips cannot overlap or be positioned outside of the grid.\nWhere do you want to position your ships?\n{351} 3 being row, 5 being column and 1 being vertical(0-horizontal)\n");
     printf("On the grid a Carrier is represented as a 5, Battleships are 4s, Destroyers 3, Submarines 2 and Patrol boats 1\n");
 
-    displayGrid(playingGrid);
+    displayGrid(player.playingGrid, player.trackingGrid);
 
     for (int i = 0; i < (sizeof(ships)/sizeof(ships[0])); i++) {
         printf("Enter %s coordinates: ", ships[i].name);
@@ -106,8 +107,12 @@ int gridSetup() {
 
         }
         validMove = false;
-        displayGrid(playingGrid);
+        clear_terminal();
+        fflush(stdout);
+        displayGrid(player.playingGrid, player.trackingGrid);
     }
+
+    printf("This is your playing and tracking grid\n");
 
     return 0;
 }
@@ -166,9 +171,9 @@ bool validPosition(const int coordinates, const int size, const char type) {
 }
 
 //updates the grid with markers for hits and misses of either player or bot
-void gridUpdate(const int cood, const char type, struct Player player) {
+void gridUpdate(const int cood, const char type, char grid[][11]) {
 
-     int row = (cood / 10);
+     int row = (cood / 10) % 10;
      int col = (cood % 10);
 
     //changes 0s(grid labelling for the 10th row/col) to 10s(actual position of row/col in 2d array
@@ -179,7 +184,7 @@ void gridUpdate(const int cood, const char type, struct Player player) {
         col = 10;
     }
 
-    player.trackingGrid[row][col] = type;
+    grid[row][col] = type;
 }
 
 void attack(const int cood, struct Player player) {
@@ -197,7 +202,7 @@ void attack(const int cood, struct Player player) {
 
     switch (player.playingGrid[row][col]) {
         case '~':
-            gridUpdate(cood, 'O', trackingGrid);
+            gridUpdate(cood, 'O', player.trackingGrid);
             printf("You missed :(\n");
             break;
         case 'C':

@@ -1,0 +1,29 @@
+
+CC = gcc
+CFLAGS = -g -Wall -std=c99
+
+
+TARGET = Battleships
+
+
+SRCS = bot.c main.c grid.c game.c player.c ship.c
+
+OBJ = battleships.o
+
+HEADERS = header.h
+
+all: $(TARGET)
+
+$(TARGET): $(OBJ)
+	$(CC) $(CFLAGS) $(OBJ) -o $(TARGET)
+
+
+$(OBJ): $(SRCS) $(HEADERS)
+	$(CC) $(CFLAGS) -c $(SRCS) -o $(OBJ)
+
+clean:
+	rm -f $(OBJ) $(TARGET)
+
+rebuild: clean all
+
+.PHONY: all clean rebuild
