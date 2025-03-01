@@ -38,23 +38,25 @@ bool validPosition(int coordinates, int size, char type, Player *player);
 void gridUpdate(int cood, char type, char grid[][11]);
 
 //Player.c methods
-int createPlayer(char name[50]);
+Player createPlayer(char name[50]);
 void initGrid(struct Player *player);
+
 
 //Game.c methods
 int gameSetup();
 int gameStart();
 int gameLoop();
-void attack(int cood, Player *attacker, Player *target);
+bool attack(int cood, Player *att, Player *target);
 
 //Ship.c methods
 Ship newShip(char name[], int size, char type);
 
 //Bot.c methods
 int botPlay();
+int initBot(Player *bot);
 
 
-int print(Player *player);
+
 
 
 #endif // HEADER_H

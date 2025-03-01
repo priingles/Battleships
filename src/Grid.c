@@ -2,71 +2,65 @@
 #include <stdbool.h>
 #include <stdlib.h>
 #include "header.h"
-
+#include "globals.h"
 
 void clear_terminal() {
 #ifdef _WIN32
-    system("cls");  // Windows
+    system("cls"); // Windows
 #else
     system("clear");  // Linux/macOS
 #endif
 }
 
-char playingGrid[11][11] = { // Grid with player ships present and everything
-    {'0','1','2','3','4','5','6','7','8','9','0'},
-    {'1','~','~','~','~','~','~','~','~','~','~'},
-    {'2','~','~','~','~','~','~','~','~','~','~'},
-    {'3','~','~','~','~','~','~','~','~','~','~'},
-    {'4','~','~','~','~','~','~','~','~','~','~'},
-    {'5','~','~','~','~','~','~','~','~','~','~'},
-    {'6','~','~','~','~','~','~','~','~','~','~'},
-    {'7','~','~','~','~','~','~','~','~','~','~'},
-    {'8','~','~','~','~','~','~','~','~','~','~'},
-    {'9','~','~','~','~','~','~','~','~','~','~'},
-    {'0','~','~','~','~','~','~','~','~','~','~'},
+char playingGrid[11][11] = {
+    // Grid with player ships present and everything
+    {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '0'},
+    {'1', '~', '~', '~', '~', '~', '~', '~', '~', '~', '~'},
+    {'2', '~', '~', '~', '~', '~', '~', '~', '~', '~', '~'},
+    {'3', '~', '~', '~', '~', '~', '~', '~', '~', '~', '~'},
+    {'4', '~', '~', '~', '~', '~', '~', '~', '~', '~', '~'},
+    {'5', '~', '~', '~', '~', '~', '~', '~', '~', '~', '~'},
+    {'6', '~', '~', '~', '~', '~', '~', '~', '~', '~', '~'},
+    {'7', '~', '~', '~', '~', '~', '~', '~', '~', '~', '~'},
+    {'8', '~', '~', '~', '~', '~', '~', '~', '~', '~', '~'},
+    {'9', '~', '~', '~', '~', '~', '~', '~', '~', '~', '~'},
+    {'0', '~', '~', '~', '~', '~', '~', '~', '~', '~', '~'},
 };
 
-char trackingGrid[11][11] = { // grid for tracking hits, only commenting incase im high as shit when I read this next
-    {'0','1','2','3','4','5','6','7','8','9','0'},
-    {'1','~','~','~','~','~','~','~','~','~','~'},
-    {'2','~','~','~','~','~','~','~','~','~','~'},
-    {'3','~','~','~','~','~','~','~','~','~','~'},
-    {'4','~','~','~','~','~','~','~','~','~','~'},
-    {'5','~','~','~','~','~','~','~','~','~','~'},
-    {'6','~','~','~','~','~','~','~','~','~','~'},
-    {'7','~','~','~','~','~','~','~','~','~','~'},
-    {'8','~','~','~','~','~','~','~','~','~','~'},
-    {'9','~','~','~','~','~','~','~','~','~','~'},
-    {'0','~','~','~','~','~','~','~','~','~','~'},
+char trackingGrid[11][11] = {
+    // grid for tracking hits, only commenting incase im high as shit when I read this next
+    {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '0'},
+    {'1', '~', '~', '~', '~', '~', '~', '~', '~', '~', '~'},
+    {'2', '~', '~', '~', '~', '~', '~', '~', '~', '~', '~'},
+    {'3', '~', '~', '~', '~', '~', '~', '~', '~', '~', '~'},
+    {'4', '~', '~', '~', '~', '~', '~', '~', '~', '~', '~'},
+    {'5', '~', '~', '~', '~', '~', '~', '~', '~', '~', '~'},
+    {'6', '~', '~', '~', '~', '~', '~', '~', '~', '~', '~'},
+    {'7', '~', '~', '~', '~', '~', '~', '~', '~', '~', '~'},
+    {'8', '~', '~', '~', '~', '~', '~', '~', '~', '~', '~'},
+    {'9', '~', '~', '~', '~', '~', '~', '~', '~', '~', '~'},
+    {'0', '~', '~', '~', '~', '~', '~', '~', '~', '~', '~'},
 };
-
-bool validMove = false; // bool for rightful ship placement
-
-char input[100];
-char* endptr;
-int cood;
-
 
 
 
 
 void displayGrid(char playingGrid[][11], char trackingGrid[][11]) {
-
     printf("\n");
     for (int i = 0; i < 11; i++) {
         for (int j = 0; j < 11; j++) {
-            printf("%c ",playingGrid[i][j]);
+            printf("%c ", playingGrid[i][j]);
         }
         printf("            ");
         for (int j = 0; j < 11; j++) {
-            printf("%c ",trackingGrid[i][j]);
+            printf("%c ", trackingGrid[i][j]);
         }
         printf("\n");
     }
     printf("\n");
 }
 
-
+// gridSetup - User inputs for ship placement(validPosition)
 
 int gridSetup(Player *player) {
 
@@ -79,24 +73,25 @@ int gridSetup(Player *player) {
     Ship ships[] = {carrier, battleship, destroyer, submarine, patrolBoat};
 
     printf("Hey %s!!\n", player->name);
-    printf("You have 5 ship types you can set up on the grid, either horizontally or vertically\nShips cannot overlap or be positioned outside of the grid.\nWhere do you want to position your ships?\n{351} 3 being row, 5 being column and 1 being vertical(0-horizontal)\n");
-    printf("On the grid a Carrier is represented as a 5, Battleships are 4s, Destroyers 3, Submarines 2 and Patrol boats 1\n");
+    printf(
+        "You have 5 ship types you can set up on the grid, either horizontally or vertically\nShips cannot overlap or be positioned outside of the grid.\nWhere do you want to position your ships?\n{351} 3 being row, 5 being column and 1 being vertical(0-horizontal)\n");
+    printf(
+        "On the grid a Carrier is represented as a 5, Battleships are 4s, Destroyers 3, Submarines 2 and Patrol boats 1\n");
 
     displayGrid(player->playingGrid, player->trackingGrid);
 
-    for (int i = 0; i < (sizeof(ships)/sizeof(ships[0])); i++) {
+    for (int i = 0; i < (sizeof(ships) / sizeof(ships[0])); i++) {
         printf("Enter %s coordinates: ", ships[i].name);
-        while(!validMove) {
-
-             // scanf("%d",&coordinates);
+        while (!validMove) {
+            // scanf("%d",&coordinates);
             fgets(input, sizeof(input), stdin);
             cood = strtol(input, &endptr, 10);
             if (endptr == input) {
-                printf("Please enter a valid coordinate.\n{351} 3 being row, 5 being column and 1 being vertical(0-horizontal)\n");
+                printf(
+                    "Please enter a valid coordinate.\n{351} 3 being row, 5 being column and 1 being vertical(0-horizontal)\n");
             } else if (*endptr == '\n') {
                 validMove = validPosition(cood, ships[i].size, ships[i].type, player); //
             }
-
         }
         validMove = false;
         clear_terminal();
@@ -108,9 +103,10 @@ int gridSetup(Player *player) {
     return 0;
 }
 
-// Positions a ship on the playing grid
-bool validPosition(const int coordinates, const int size, const char type, Player *player) {
+// validPosition - Ship placement on user grid
 
+bool validPosition(const int coordinates, const int size, const char type, Player *player) {
+    // Coordinates deconstructor
     int row = (coordinates / 100);
     int col = ((coordinates % 100) / 10);
     const int axis = coordinates % 10;
@@ -123,11 +119,14 @@ bool validPosition(const int coordinates, const int size, const char type, Playe
         col = 10;
     }
 
-
-
-    if (axis == 0) { // Horizontally aligned ships
+    if (axis > 1) {
+        printf("Please enter a valid coordinate. Try again: ");
+        return false;
+    }
+    if (axis == 0) {
+        // Horizontally aligned ships
         for (int i = 0; i < size; i++) {
-            if (col + size >= 11) {
+            if (col + size >= 12) {
                 printf("Ship placement out of bounds! Try again: \n");
                 break;
             }
@@ -141,9 +140,10 @@ bool validPosition(const int coordinates, const int size, const char type, Playe
                 break;
             }
         }
-    } else if (axis == 1) { // Vertically aligned ships
+    } else if (axis == 1) {
+        // Vertically aligned ships
         for (int i = 0; i < size; i++) {
-            if (row + size >= 11 ) {
+            if (row + size >= 12) {
                 printf("Ship placement out of bounds! Try again: \n");
                 break;
             }
@@ -158,14 +158,14 @@ bool validPosition(const int coordinates, const int size, const char type, Playe
             }
         }
     }
+
     return false;
 }
 
-//updates the grid with markers for hits and misses of either player or bot
+// gridUpdate - Tracking grid updates
 void gridUpdate(const int cood, const char type, char grid[][11]) {
-
-     int row = (cood / 10) % 10;
-     int col = (cood % 10);
+    int row = (cood / 10) % 10;
+    int col = (cood % 10);
 
     //changes 0s(grid labelling for the 10th row/col) to 10s(actual position of row/col in 2d array
     if (row == 0) {

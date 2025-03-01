@@ -1,7 +1,7 @@
 #include "header.h"
 #include <string.h>
 
-int createPlayer(char name[50]) {
+struct Player createPlayer(char name[50]) {
 
     Player player;
     strcpy(player.name, name);
@@ -11,9 +11,14 @@ int createPlayer(char name[50]) {
     player.battleship = newShip("Battleship", 4, 'B');
     player.destroyer = newShip("Destroyer", 3, 'D');
     player.submarine = newShip("Submarine", 3, 'S');
-    player.patrolBoat = newShip("PatrolBoat", 3, 'P');
+    player.patrolBoat = newShip("PatrolBoat", 2, 'P');
 
+    initGrid(&player);
+
+    return player;
 }
+
+
 
 void initGrid(Player *player) {
     const char tempGrid[11][11] = { // Temporary array

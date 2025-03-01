@@ -1,34 +1,26 @@
-# Compiler and flags
+
+SRC_DIR = src
+OBJ_DIR = obj
+BIN_DIR = bin
+
+SRC_FILES = $(wildcard $(SRC_DIR)/*.c)
+
+OBJ_FILES = $(SRC_FILES:$(SRC_DIR)/%.c=$(OBJ_DIR)/%.o)
+
+EXEC = $(BIN_DIR)/final
+
 CC = gcc
 CFLAGS = -g -Wall -std=c99
 
-# Output executable
-TARGET = final
+all: $(EXEC)
 
-# Source files
-SRCS = Bot.c Main.c Grid.c Game.c Player.c Ship.c
+$(EXEC): $(OBJ_FILES)
+	$(CC) $(OBJ_FILES) -o $(EXEC)
 
-# Object files (for each .c file, there will be a corresponding .o file)
-OBJS = $(SRCS:.c=.o)
-
-# Header files (you can add more headers here if needed)
-HEADERS = header.h
-
-# Makefile rules
-all: $(TARGET)
-
-$(TARGET): $(OBJS)
-	$(CC) $(CFLAGS) $(OBJS) -o $(TARGET)
-
-# Rule to compile each .c file into .o file
-%.o: %.c $(HEADERS)
+$(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
 	$(CC) $(CFLAGS) -c $< -o $@
 
-# Clean rule to remove generated files
 clean:
-	rm -f $(OBJS) $(TARGET)
+	rm -rf $(OBJ_DIR)/*.o $(EXEC)
 
-# Rule to recompile everything
-rebuild: clean all
-
-.PHONY: all clean rebuild
+.PHONY: all clean
