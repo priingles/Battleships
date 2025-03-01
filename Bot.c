@@ -1,6 +1,4 @@
-//
-// Created by kleoa on 18/02/2025.
-//
+#include <stdio.h>
 #include <stdlib.h>
 #include "header.h"
 
@@ -33,17 +31,19 @@ char botTrackingGrid[11][11] = { // grid for tracking hits, only commenting inca
     {'0','~','~','~','~','~','~','~','~','~','~'},
 };
 
-int botPlay() {
+int botPlay(Player *bot, Player *player) {
 
-    const int random_cood = 11 + rand() % 99;
+    const int random_cood = (rand() % 90) + 10;
     const int threshold = 100;
     const int random_val = rand() % threshold;
 
-    // if (random_val == 0) {
-    //     attack(00);
-    // } else {
-    //     attack(random_cood);
-    // }
+    if (random_val == 0) {
+        attack(00, bot,player);
+        printf("00");
+    } else {
+        attack(random_cood, bot, player);
+        printf("%d", random_cood);
+    }
 
     return 0;
 }
