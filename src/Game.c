@@ -2,32 +2,29 @@
 #include <stdlib.h>
 #include <string.h>
 #include <windows.h>
-
-#include "header.h"
-#include "globals.h"
+#include "Header.h"
+#include "Globals.h"
 
 
 int difficulty;
-Player player1;
-Player bot;
+
 
 int gameSetup() {
     clear_terminal();
 
     printf("Enter player name: ");
-    fgets(input, sizeof(player1.name), stdin);
-    input[strcspn(player1.name, "\n")] = '\0'; //removes newline from fgets
+    fgets(input, sizeof(input), stdin);
+    input[strcspn(input, "\n")] = '\0'; //removes newline from fgets
 
-    player1 = createPlayer(input);
-    bot = createPlayer("bot");
+    mainPlayer = createPlayer(input);
+    bot = createPlayer("Bot");
 
     clear_terminal();
 
-    initGrid(&player1); // initialises player playing&trackingGrid
-    // gridSetup(&player1);
+    gridSetup(&mainPlayer);
     initGrid(&bot);
-    //gridSetup(&bot);
-    displayGrid(player1.playingGrid, player1.trackingGrid);
+    botGridSetup(&bot);
+    display();
     printf("Choose bot difficulty(1-5) [doesnt matter rn]: ");
     fgets(input, sizeof(input), stdin);
     difficulty = strtol(input, &endptr, 10);
@@ -37,28 +34,42 @@ int gameSetup() {
 }
 
 int gameLoop() {
-    printf("Attack coordinates are similar to set-up coordinates, they make use of 2digit numbers as an axis is not required\n\n");
+    printf(
+        "Attack coordinates are similar to set-up coordinates, they make use of 2digit numbers as an axis is not required\n\n");
 
     while (true) {
-        //Turns and playing
-        if (turn % 2 == 1) {
-            printf("It's your turn\nEnter attack coordinates: \n");
+        //turns and playing
+        if (turn % 2 == PLAYER_TURN) {
+            int attackCood = 0;
+            printf("\nIt's your turn\nEnter attack coordinates: \n");
             while (!validMove) {
                 fgets(input, sizeof(input), stdin);
-                const int attackCood = strtol(input, &endptr, 10);
-                validMove = attack(attackCood, &player1, &bot);
+                attackCood = strtol(input, &endptr, 10);
+                validMove = attack(attackCood, &mainPlayer, &bot);
             }
-            displayGrid(player1.playingGrid, player1.trackingGrid);
+
             validMove = false;
+            //win condition
+            if (mainPlayer.carrier.size == 0 && mainPlayer.battleship.size == 0 && mainPlayer.destroyer.size == 0 &&
+                mainPlayer.submarine.size == 0 && mainPlayer.patrolBoat.size == 0) {
+                printf("You lose. You have no ships left\n\n");
+                break;
+            }
         } else {
             printf("Bot is playing...\n\n");
             Sleep(1500);
-            botPlay(&bot, &player1);
+            botPlay(&bot, &mainPlayer);
+            display();
+            //loss condition
+            if (bot.carrier.size == 0 && bot.battleship.size == 0 && bot.destroyer.size == 0 && bot.submarine.size == 0
+                && bot.patrolBoat.size == 0) {
+                printf("You lose. You have no ships left\n\n");
+                break;
+            }
         }
-
-
         turn++;
     }
+    return 0;
 }
 
 bool attack(const int cood, Player *att, Player *target) {
@@ -76,6 +87,11 @@ bool attack(const int cood, Player *att, Player *target) {
             col = 10;
         }
 
+        if (turn % 2 == PLAYER_TURN) {
+            char message[100];
+            sprintf(message, "You attacked %d", cood);
+            info_msg(message);
+        }
 
         switch (target->playingGrid[row][col]) {
             case '~':
@@ -84,62 +100,48 @@ bool attack(const int cood, Player *att, Player *target) {
                     return false;
                 }
                 gridUpdate(cood, 'O', att->trackingGrid);
-                displayGrid(player1.playingGrid, player1.trackingGrid);
-            if (turn % 2 == 1) {
-                printf("you missed");
-            }else {
-                printf("%s missed\n", att->name);
-            }
-
+                display();
+                if (turn % 2 == PLAYER_TURN) {
+                    info_msg("you missed");
+                    display();
+                } else {
+                    printf("%s missed\n", att->name);
+                }
                 return true;
             case 'C':
                 gridUpdate(cood, 'X', att->trackingGrid);
                 gridUpdate(cood, 'X', target->playingGrid);
-                printf("%s carrier has been HIT!\n", target->name);
+                if (turn % 2 == PLAYER_TURN) {
+                    info_msg("You hit enemy carrier!");
+                } else {
+                    info_msg("Your carrier has been hit!");
+                }
                 target->carrier.size -= 1;
                 if (target->carrier.size == 0) {
-                    printf("%s carrier has been sunk!\n", target->name);
+                    if (turn % 2 == PLAYER_TURN) {
+                        info_msg("You sunk enemy carrier!");
+                    } else {
+                        info_msg("Your carrier has been sunk");
+                    }
                 }
                 return true;
             case 'B':
                 gridUpdate(cood, 'X', att->trackingGrid);
                 gridUpdate(cood, 'X', target->playingGrid);
-                printf("Enemy battleship HIT!\n");
+                if (turn % 2 == PLAYER_TURN) {
+                    info_msg("You hit enemy battleship!");
+                } else {
+                    info_msg("Your battleship has been hit!");
+                }
                 target->battleship.size -= 1;
                 if (target->battleship.size == 0) {
-                    printf("Enemy battleship has been sunk!\n");
+                    if (turn % 2 == PLAYER_TURN) {
+                        info_msg("You sunk enemy battleship!");
+                    } else {
+                        info_msg("Your battleship has been sunk");
+                    }
                 }
                 return true;
-            case 'D':
-                gridUpdate(cood, 'X', att->trackingGrid);
-                gridUpdate(cood, 'X', target->playingGrid);
-                printf("Enemy destroyer HIT!\n");
-                target->destroyer.size -= 1;
-                if (target->destroyer.size == 0) {
-                    printf("Enemy destroyer has been sunk!\n");
-                }
-                return true;
-            case 'S':
-                gridUpdate(cood, 'X', att->trackingGrid);
-                gridUpdate(cood, 'X', target->playingGrid);
-                printf("Enemy submarine HIT!!\n");
-                target->submarine.size -= 1;
-                if (target->submarine.size == 0) {
-                    printf("Enemy submarine has been sunk!\n");
-                }
-                return true;
-            case 'P':
-                gridUpdate(cood, 'X', att->trackingGrid);
-                gridUpdate(cood, 'X', target->playingGrid);
-                printf("Enemy patrol boat HIT!\n");
-                target->patrolBoat.size -= 1;
-                if (target->patrolBoat.size == 0) {
-                    printf("Enemy patrol boat has been sunk!\n");
-                }
-                return true;
-            case 'X':
-                printf("This coordinate has already been targeted\n");
-                return false;
             default:
                 printf("you're not even supposed to get here twin what the fuck did you break :(");
         }

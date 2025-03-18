@@ -12,5 +12,5 @@ add_executable(Battleships src/Main.c
         src/Player.c
         src/globals.h
         src/globals.c
-        src/display.c
+        src/Display.c
 )

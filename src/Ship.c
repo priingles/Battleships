@@ -1,9 +1,9 @@
 #include <string.h>
-#include "header.h"
+#include "Header.h"
 
 
 
-Ship newShip(char name[], int size, char type) {
+Ship newShip(char name[], const int size,const char type) {
     Ship newShip = {0, "", 'o'};
     strcpy(newShip.name, name);
     newShip.type = type;
