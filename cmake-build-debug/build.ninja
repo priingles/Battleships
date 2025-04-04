@@ -97,6 +97,18 @@ build CMakeFiles/Battleships.dir/src/Display.c.obj: C_COMPILER__Battleships_unsc
   OBJECT_DIR = CMakeFiles\Battleships.dir
   OBJECT_FILE_DIR = CMakeFiles\Battleships.dir\src
 
+build CMakeFiles/Battleships.dir/src/Menu.c.obj: C_COMPILER__Battleships_unscanned_Debug C$:/Users/kleoa/Desktop/priingles/Code/C/Battleships/src/Menu.c || cmake_object_order_depends_target_Battleships
+  DEP_FILE = CMakeFiles\Battleships.dir\src\Menu.c.obj.d
+  FLAGS = -g -std=gnu11 -fdiagnostics-color=always
+  OBJECT_DIR = CMakeFiles\Battleships.dir
+  OBJECT_FILE_DIR = CMakeFiles\Battleships.dir\src
+
+build CMakeFiles/Battleships.dir/src/Records.c.obj: C_COMPILER__Battleships_unscanned_Debug C$:/Users/kleoa/Desktop/priingles/Code/C/Battleships/src/Records.c || cmake_object_order_depends_target_Battleships
+  DEP_FILE = CMakeFiles\Battleships.dir\src\Records.c.obj.d
+  FLAGS = -g -std=gnu11 -fdiagnostics-color=always
+  OBJECT_DIR = CMakeFiles\Battleships.dir
+  OBJECT_FILE_DIR = CMakeFiles\Battleships.dir\src
+
 
 # =============================================================================
 # Link build statements for EXECUTABLE target Battleships
@@ -105,7 +117,7 @@ build CMakeFiles/Battleships.dir/src/Display.c.obj: C_COMPILER__Battleships_unsc
 #############################################
 # Link the executable Battleships.exe
 
-build Battleships.exe: C_EXECUTABLE_LINKER__Battleships_Debug CMakeFiles/Battleships.dir/src/Main.c.obj CMakeFiles/Battleships.dir/src/Grid.c.obj CMakeFiles/Battleships.dir/src/Ship.c.obj CMakeFiles/Battleships.dir/src/Bot.c.obj CMakeFiles/Battleships.dir/src/Game.c.obj CMakeFiles/Battleships.dir/src/Player.c.obj CMakeFiles/Battleships.dir/src/Globals.c.obj CMakeFiles/Battleships.dir/src/Display.c.obj
+build Battleships.exe: C_EXECUTABLE_LINKER__Battleships_Debug CMakeFiles/Battleships.dir/src/Main.c.obj CMakeFiles/Battleships.dir/src/Grid.c.obj CMakeFiles/Battleships.dir/src/Ship.c.obj CMakeFiles/Battleships.dir/src/Bot.c.obj CMakeFiles/Battleships.dir/src/Game.c.obj CMakeFiles/Battleships.dir/src/Player.c.obj CMakeFiles/Battleships.dir/src/Globals.c.obj CMakeFiles/Battleships.dir/src/Display.c.obj CMakeFiles/Battleships.dir/src/Menu.c.obj CMakeFiles/Battleships.dir/src/Records.c.obj
   FLAGS = -g
   LINK_LIBRARIES = -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32
   OBJECT_DIR = CMakeFiles\Battleships.dir

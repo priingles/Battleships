@@ -1,1 +1,22 @@
 2nd trimester 2024/2025 DSA Coursework
+
+To earn a better grade there are some additional requirements:
+• Your game should record the history of play and allow earlier
+games to be automatically re-played from this record, i.e. the
+sequence of moves that the player(s) make during a game, so
+that each game that is played can be recorded and re-played.
+Subsequent automatic replaying a record of an earlier game from
+the record is a part of this requirement.
+• Your game should support undo, i.e. once a move is made you
+should be able to un-apply it, returning the game state to the
+immediate previous state. Your players should be able to undo
+moves right back to the initial game state.
+• Once an undo facility is working your game can be extended to
+support redo of moves that have been undone.
+• Extra options to be considered. Options like playing against time.
+For example, 7 minutes to finish the game.
+
+
+Requirements
+
+1.Save unfinished game and load it back from files

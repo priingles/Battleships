@@ -18,13 +18,15 @@ int botPlay(Player *bot, Player *player) {
 
     if (random_val == 0) {
         info_msg("Bot attacked 00\n");
-        attack(00, bot, player);
+        attack('00', bot, player);
 
     } else {
         char message[100];
+        char coord[10];
         sprintf(message, "Bot attacked %d", random_cood);
+        sprintf(coord, "%d", random_cood);
         info_msg(message);
-        attack(random_cood, bot, player);
+        attack(coord, bot, player);
     }
 
     return 0;

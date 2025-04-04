@@ -68,7 +68,7 @@ int gridSetup(Player *player) {
     //     player->name);
     // setHdr_txt(msg);
     // display();
-
+    //
     // WILL BE MOVED SOMEWHERE ELSE
 
 

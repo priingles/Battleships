@@ -3,6 +3,7 @@
 #include <stddef.h>
 
 bool validMove = false;
+bool quitVal = false;
 char input[100] = "";
 char *endptr = NULL;
 int cood = 0;
@@ -19,6 +20,9 @@ int turn = 0;
 //Game.c vars
 Player mainPlayer = {0};
 Player bot = {0};
+struct gameStateNode *root = NULL;
+struct gameStateNode *current = NULL;
+GameState gameState = {0};
 
 //Display.c vars
 char hdr[100] = "HEADER MESSAGE PLACEHOLDER\n";

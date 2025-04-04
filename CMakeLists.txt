@@ -13,4 +13,6 @@ add_executable(Battleships src/Main.c
         src/globals.h
         src/globals.c
         src/Display.c
+        src/menu.c
+        src/Records.c
 )

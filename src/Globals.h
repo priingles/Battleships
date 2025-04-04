@@ -6,6 +6,7 @@
 
 
 extern bool validMove;
+extern bool quitVal;
 extern char input[100];
 extern char *endptr;
 extern int cood;
@@ -24,6 +25,9 @@ extern Ship ships[];
 // Game.c vars
 extern Player mainPlayer; // current user at any given time
 extern Player bot;
+struct gameStateNode *root;
+struct gameStateNode *current;
+GameState gameState;
 
 //Display.c vars
 extern char hdr[100];
