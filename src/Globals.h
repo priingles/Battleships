@@ -25,9 +25,9 @@ extern Ship ships[];
 // Game.c vars
 extern Player mainPlayer; // current user at any given time
 extern Player bot;
-struct gameStateNode *root;
-struct gameStateNode *current;
-GameState gameState;
+extern GameStateNode *root;
+extern GameStateNode *current;
+extern GameState gameState;
 
 //Display.c vars
 extern char hdr[100];

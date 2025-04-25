@@ -1,8 +1,8 @@
 #include <stdio.h>
+#include <stdlib.h>
 
 #include "Globals.h"
 #include "Header.h"
-
 
 
 int save() {
@@ -24,24 +24,40 @@ int load() {
     gameLoop(gameState.player, gameState.bot);
 
     return 0;
-
 }
 
-int recordMove() {
-    const GameState gameState = {mainPlayer, bot};
-    FILE *file = fopen("moves.bin", "wb");
-    if (file == NULL) {
-        perror("Error opening file\n");
+int recordMove(GameState *gameState) {
+    GameStateNode *newNode = (GameStateNode *) malloc(sizeof(GameStateNode));
+
+    // Node traversal
+    newNode->gameState = gameState;
+    newNode->prev = current;
+    newNode->next = NULL;
+
+    if (current != NULL) {
+        current->next = newNode;
     }
-    fwrite(&gameState, sizeof(gameState), 1, file);
-    fclose(file);
+
+    current = newNode;
     return 0;
 }
 
-// int undo() {
-//     struct gameStateNode *current = get_current();
-//     if (current && current->next) {
-//
-//     }
-//     return 0;
-// }
+int undo() {
+    if (current != NULL && current->next != NULL) {
+        gameState = *current->prev->gameState;
+    } else {
+        printf("Undo failed\nNo previous game state\n");
+    }
+    display();
+    return 0;
+}
+
+int redo() {
+    if (current != NULL && current->next != NULL) {
+        gameState = *current->next->gameState;
+    }
+    else {
+        printf("Redo failed\nNo more game states\n");
+    }
+    return 0;
+}

@@ -9,14 +9,13 @@
 
 int difficulty;
 
-struct GameStateNode* get_current() {
-    current->gameState = &gameState;
-    return current;
-}
+// GameStateNode *get_current() {
+//     current->gameState = &gameState;
+//     return current;
+// }
 
 
 int gameSetup() {
-
     gameState.player = mainPlayer;
     gameState.bot = bot;
 
@@ -44,6 +43,7 @@ int gameSetup() {
 }
 
 int gameLoop(const Player player, const Player player2) {
+
     mainPlayer = player;
     bot = player2;
 
@@ -54,7 +54,6 @@ int gameLoop(const Player player, const Player player2) {
     while (!quitVal) {
         //turns and playing
         if (turn % 2 == PLAYER_TURN) {
-            int attackCoord = 0;
             printf("\nIt's your turn\nEnter attack coordinates: \n");
             while (!validMove) {
                 fgets(input, sizeof(2), stdin);
@@ -82,27 +81,36 @@ int gameLoop(const Player player, const Player player2) {
                 break;
             }
         }
+        recordMove(&gameState);
         turn++;
     }
     return 0;
 }
 
+
 bool attack(char input[10], Player *att, Player *target) {
+
+// Returning false in this block keeps the program requesting player input.
+// True passes play to bot or moves to game menu
+
     const int coord = strtol(input, &endptr, 10);
     switch (input[0]) {
         case 's':
         case 'S':
-        printf("saving...\n\n");
-        Sleep(1500);
-        display();
-        printf("Game saved.");
+            printf("saving...\n\n");
+            Sleep(1500);
+            display();
+            printf("Game saved.");
             save(mainPlayer, bot);
             return false;
         case 'q':
-            case 'Q':
-        quitVal = true;
-        menu();
-        return true;
+        case 'Q':
+            quitVal = true;
+            menu();
+            return true;
+        case 'u':
+        case 'U':
+        return false;
         default:
             if (target == NULL) {
                 printf("player is null");

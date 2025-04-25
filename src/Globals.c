@@ -20,8 +20,8 @@ int turn = 0;
 //Game.c vars
 Player mainPlayer = {0};
 Player bot = {0};
-struct gameStateNode *root = NULL;
-struct gameStateNode *current = NULL;
+GameStateNode *root = NULL;
+GameStateNode *current = NULL;
 GameState gameState = {0};
 
 //Display.c vars

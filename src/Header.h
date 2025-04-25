@@ -3,7 +3,7 @@
 
 #include <stdbool.h>
 
-struct GameState;  // Forward declaration of GameState
+
 
 typedef struct Ship {
     char name[30];
@@ -22,17 +22,17 @@ typedef struct Player {
     char trackingGrid[11][11];
 } Player;
 
-// Move GameState before GameStateNode
-typedef struct GameState {
+
+typedef struct gameState {
     Player player;
     Player bot;
-    struct GameStateNode *next, *prev;
+    struct gameStateNode *next, *prev;
 } GameState;
 
-typedef struct GameStateNode {
-    struct GameState *gameState;
-    struct GameStateNode *prev;
-    struct GameStateNode *next;
+typedef struct gameStateNode {
+    struct gameState *gameState;
+    struct gameStateNode *prev;
+    struct gameStateNode *next;
 } GameStateNode;
 
 int main();
@@ -57,7 +57,7 @@ int gameSetup();
 int gameStart();
 int gameLoop(const Player player, const Player player2);
 bool attack(char input[10], Player *att, Player *target);
-struct GameStateNode* get_current();
+GameStateNode* get_current();
 
 // Ship.c methods
 Ship newShip(char name[], int size, char type);
@@ -76,6 +76,7 @@ void setHdr_txt(char msg[300]);
 // Records.c methods
 int save();
 int load();
+int recordMove(GameState *gameState);
 
 // MACROS
 #define PLAYER_TURN 0
